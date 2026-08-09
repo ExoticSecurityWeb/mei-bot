@@ -1,9 +1,6 @@
-console.log("--- PALMI 2 FORCE START ---");
+console.log("--- [MEI-BOT V5] DEMARRAGE FORCE ---");
 const ws = require("ws");
-if (typeof global.WebSocket === "undefined") { 
-    console.log("Polyfilling WebSocket for Node 20...");
-    global.WebSocket = ws; 
-}
+global.WebSocket = ws;
 
 const { Client, GatewayIntentBits, EmbedBuilder, Events } = require("discord.js");
 const { createClient } = require("@supabase/supabase-js");
@@ -16,8 +13,6 @@ const supabase = createClient(config.SUPABASE_URL, config.SUPABASE_SERVICE_KEY, 
 });
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-
-// ... reste du code ...
 
 const DUPLICATE_BONUS = { common: 20, rare: 40, epic: 70, legendary: 150 };
 const RARITY_WEIGHTS = { common: 60, rare: 25, epic: 12, legendary: 3 };
