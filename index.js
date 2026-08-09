@@ -1,13 +1,28 @@
-const ws = require("ws"); if (typeof global.WebSocket === "undefined") { global.WebSocket = ws; }
+const ws = require("ws");
+global.WebSocket = ws;
+
 const { Client, GatewayIntentBits, EmbedBuilder, Events } = require("discord.js");
 const { createClient } = require("@supabase/supabase-js");
 const config = require("./config");
 
 const supabase = createClient(config.SUPABASE_URL, config.SUPABASE_SERVICE_KEY, {
+  auth: {
+    persistSession: false,
+  },
   realtime: {
-    WebSocket: ws,
+    params: {
+      eventsPerSecond: 10,
+    },
+  },
+  global: {
+    fetch: (...args) => import("node-fetch").then(({default: fetch}) => fetch(...args)),
   },
 });
+
+// Solution specifique demandee par l'erreur : passer le transport ws
+const { RealtimeClient } = require("@supabase/realtime-js");
+// Mais supabase-js l'encapsule. On va forcer le global.
+
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 const DUPLICATE_BONUS = { common: 20, rare: 40, epic: 70, legendary: 150 };
