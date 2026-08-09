@@ -3,6 +3,11 @@ const { createClient } = require("@supabase/supabase-js");
 const ws = require("ws");
 const config = require("./config");
 
+// Polyfill global WebSocket for Node.js versions < 22
+if (typeof global.WebSocket === "undefined") {
+  global.WebSocket = ws;
+}
+
 const supabase = createClient(config.SUPABASE_URL, config.SUPABASE_SERVICE_KEY, {
   realtime: {
     WebSocket: ws,
