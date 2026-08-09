@@ -1,0 +1,17 @@
+{
+  "name": "mei-bot",
+  "version": "1.0.0",
+  "description": "Mei - bot Discord lié à takashi-exotic.ddo.jp (JP live clock, annonces Gatcha, tirage /gatcha)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "register": "node deploy-commands.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.15.3",
+    "@supabase/supabase-js": "^2.45.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
