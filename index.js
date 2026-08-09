@@ -1,8 +1,13 @@
 const { Client, GatewayIntentBits, EmbedBuilder, Events } = require("discord.js");
 const { createClient } = require("@supabase/supabase-js");
+const ws = require("ws");
 const config = require("./config");
 
-const supabase = createClient(config.SUPABASE_URL, config.SUPABASE_SERVICE_KEY);
+const supabase = createClient(config.SUPABASE_URL, config.SUPABASE_SERVICE_KEY, {
+  realtime: {
+    WebSocket: ws,
+  },
+});
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 const DUPLICATE_BONUS = { common: 20, rare: 40, epic: 70, legendary: 150 };
@@ -106,6 +111,7 @@ client.on(Events.InteractionCreate, async (i) => {
   if (i.commandName === "solde") {
     const email = i.options.getString("email"); await i.deferReply({ ephemeral: true });
     const { data: p } = await supabase.from("profiles").select("id, username").eq("email", email).single();
+    if (!p) return i.editReply("❌ Aucun compte.");
     const { data: w } = await supabase.from("gatcha_wallet").select("coins, last_regen").eq("profile_id", p.id).single();
     const { newCoins } = computeRegen(w.coins, w.last_regen); await i.editReply(`🪙 **${p.username}** a **${newCoins} coins**.`);
   }
