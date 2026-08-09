@@ -23,12 +23,8 @@ const rest = new REST({ version: "10" }).setToken(config.DISCORD_TOKEN);
 (async () => {
   try {
     console.log("Enregistrement des commandes slash...");
-
-    // Récupère l'ID de l'application depuis le token via une requête /users/@me
     const app = await rest.get(Routes.oauth2CurrentApplication());
-
     await rest.put(Routes.applicationCommands(app.id), { body: commands });
-
     console.log("Commandes enregistrées avec succès pour", app.name);
   } catch (error) {
     console.error(error);
