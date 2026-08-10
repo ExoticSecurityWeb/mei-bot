@@ -108,7 +108,15 @@ async function handleGatchaCommand(interaction) {
   if (rarity === "legendary" && !isDuplicate) await announceLegendary(profile.username, drawnItem.name, drawnItem.image_url);
 }
 
-client.once(Events.ClientReady, () => { console.log("Mei is ready"); updateJSTStatus(); setInterval(updateJSTStatus, 60000); pollSupabase(); setInterval(pollSupabase, config.POLL_INTERVAL_MS); });
+client.once(Events.ClientReady, async () => {
+  console.log("Mei is ready");
+  await client.application.commands.set([
+    { name: "gatcha", description: "Tire une carte du Gatcha Takashi Exotic", options: [{ name: "email", description: "Email utilise pour ton compte Gatcha", type: 3, required: true }] },
+    { name: "solde", description: "Affiche ton solde de coins Gatcha", options: [{ name: "email", description: "Email utilise pour ton compte Gatcha", type: 3, required: true }] },
+  ]);
+  console.log("Commandes slash enregistrees");
+  updateJSTStatus(); setInterval(updateJSTStatus, 60000); pollSupabase(); setInterval(pollSupabase, config.POLL_INTERVAL_MS);
+});
 client.on(Events.InteractionCreate, async (i) => {
   if (!i.isChatInputCommand()) return;
   if (i.commandName === "gatcha") { if (i.channelId !== config.GATCHA_CHANNEL_ID) return i.reply({ content: "Mauvais salon", ephemeral: true }); await handleGatchaCommand(i); }
