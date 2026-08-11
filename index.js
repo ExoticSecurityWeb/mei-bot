@@ -5,6 +5,7 @@ global.WebSocket = ws;
 const { Client, GatewayIntentBits, EmbedBuilder, Events } = require("discord.js");
 const { createClient } = require("@supabase/supabase-js");
 const config = require("./config");
+const { startTelegramBot } = require("./telegram");
 
 const supabase = createClient(config.SUPABASE_URL, config.SUPABASE_SERVICE_KEY, {
   realtime: { WebSocket: ws },
@@ -259,3 +260,4 @@ client.on(Events.InteractionCreate, async (interaction) => {
 });
 
 client.login(config.DISCORD_TOKEN);
+startTelegramBot();
