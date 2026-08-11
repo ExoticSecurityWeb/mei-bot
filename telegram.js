@@ -52,6 +52,19 @@ function startTelegramBot() {
   const bot = new TelegramBot(config.TELEGRAM_TOKEN, { polling: true });
   console.log("Mei (Telegram) est prête");
 
+  bot.onText(/\/start/, (msg) => {
+    const chatId = msg.chat.id;
+    bot.sendMessage(
+      chatId,
+      "🌸 *Konnichiwa !* Je suis Mei, l'assistante de Takashi Exotic.\n\n" +
+        "Voici ce que je peux faire pour toi :\n\n" +
+        "🎴 `/gatcha ton@email.com` — Tirer une carte du Gatcha\n" +
+        "🪙 `/solde ton@email.com` — Voir ton solde de coins\n\n" +
+        "À bientôt sur takashi-exotic.ddo.jp ✨",
+      { parse_mode: "Markdown" }
+    );
+  });
+
   bot.onText(/\/gatcha(?:\s+(.+))?/, async (msg, match) => {
     const chatId = msg.chat.id;
     const email = match[1]?.trim();
