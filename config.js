@@ -1,5 +1,6 @@
 module.exports = {
   DISCORD_TOKEN: process.env.DISCORD_TOKEN,
+  TELEGRAM_TOKEN: process.env.TELEGRAM_TOKEN,
   SUPABASE_URL: "https://rykrtutnyzhjtkqhlpnx.supabase.co",
   SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY,
   ANNOUNCE_CHANNEL_ID: "1536020749331206276",
