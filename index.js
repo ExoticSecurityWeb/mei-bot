@@ -1,10 +1,19 @@
 console.log("--- [MEI-BOT V6] DEMARRAGE FORCE ---");
+const http = require("http");
 const ws = require("ws");
 global.WebSocket = ws;
+
+// Serveur HTTP minimal — nécessaire pour que Render considère le service "vivant"
+const PORT = process.env.PORT || 3000;
+http.createServer((req, res) => {
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.end("Mei est en ligne 🌸");
+}).listen(PORT, () => console.log(`Serveur HTTP de garde sur le port ${PORT}`));
 
 const { Client, GatewayIntentBits, EmbedBuilder, Events } = require("discord.js");
 const { createClient } = require("@supabase/supabase-js");
 const config = require("./config");
+const { startTelegramBot } = require("./telegram");
 
 const supabase = createClient(config.SUPABASE_URL, config.SUPABASE_SERVICE_KEY, {
   realtime: { WebSocket: ws },
@@ -259,3 +268,4 @@ client.on(Events.InteractionCreate, async (interaction) => {
 });
 
 client.login(config.DISCORD_TOKEN);
+startTelegramBot();
